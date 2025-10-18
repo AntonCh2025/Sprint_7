@@ -1,0 +1,4 @@
+__pycache__/
+.pytest_cache/
+fix_log.txt
+code_test.py
