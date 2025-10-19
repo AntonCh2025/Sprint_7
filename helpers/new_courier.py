@@ -31,7 +31,8 @@ def register_new_courier_and_return_login_password():
     }
 
     # отправляем запрос на регистрацию курьера и сохраняем ответ в переменную response
-    response = requests.post('https://qa-scooter.praktikum-services.ru/api/v1/courier', data=payload)
+    url = Url.BASE_URL + Url.COURIER_URL
+    response = requests.post(url=url, data=payload)
 
     # если регистрация прошла успешно (код ответа 201), добавляем в список логин и пароль курьера
     if response.status_code == 201:
@@ -66,3 +67,20 @@ def new_login_pass_fname():
     }
     
     return login_pass_fname
+
+# метод получает id курьера, который нужен для удаления
+def get_courier_id(login, password):
+    payload = {
+        "login": login,
+        "password": password
+    }
+    response_login = requests.post(Url.BASE_URL + Url.COURIER_LOGIN_URL, json=payload)
+    
+    return response_login.json()["id"]
+
+# метод удаляет курьера п
+def delete_courier(login, password):
+    id = get_courier_id(login, password)
+    url = f'{Url.BASE_URL}{Url.COURIER_URL}/{id}'
+    response_delete = requests.delete(url=url)
+
